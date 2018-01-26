@@ -9,6 +9,7 @@ const {
   makeExecutableSchema
 } = require('graphql-tools');
 const serveStatic = require('serve-static');
+const typeDefs = require('./typeDefs');
 
 // Some fake data
 const books = [{
@@ -21,39 +22,22 @@ const books = [{
   },
 ];
 
-const typeDefs = `
-  type Query {
-    books: [Book!]!
-    author: Author
-  }
-
-  type Book { title: String!, author: String! }
-  type Author {
-    id: String!
-    author: AuthorObject
-  }
-  type AuthorObject {
-    name: String!
-    books: [Book!]!
-  }
-`;
-
+const id = "1234";
 let called = 0;
+
 const resolvers = {
   Query: {
-    books: () => books,
     author: () => {
       if (called === 0) {
-        called++;
         return {
-          id: "a",
+          id,
           author: null
         }
       } else {
         return {
-          id: "a",
+          id,
           author: {
-            name: "Arthur Clarke",
+            name: "Greg Eagan",
             books: [{
               author: "Arthur Clarke",
               title: "The Sentinel"
@@ -64,6 +48,22 @@ const resolvers = {
 
     }
   },
+  Mutation: {
+    author: () => {
+      console.log("MUTATE!");
+      called++;
+      return ({
+        id,
+        author: {
+          name: "Arthur Clarke",
+          books: [{
+            author: "Arthur Clarke",
+            title: "The Sentinel"
+          }]
+        }
+      })
+    }
+  }
 };
 
 const schema = makeExecutableSchema({
