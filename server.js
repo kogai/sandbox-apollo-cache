@@ -29,6 +29,7 @@ const resolvers = {
   Query: {
     author: () => {
       if (called === 0) {
+        called++;
         return {
           id,
           author: null

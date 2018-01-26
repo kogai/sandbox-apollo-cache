@@ -43,11 +43,15 @@ mutation M {
 }
 `;
 
-const C = graphql(query)(({ data }) => {
+const C = graphql(query, {
+  options: {
+    fetchPolicy: 'network-only'
+  }
+})(({ data }) => {
   if (data.loading) {
     return <span>LOADING...</span>
   }
-  console.log(data.author);
+  console.log(data);
   return <div>{data.author.author
       ? data.author.author.name
       : "No-author"}</div>
@@ -67,11 +71,14 @@ const D = graphql(mutation)(class extends React.Component {
       <div>
         <button
           onClick={() => {
-            mutate().then(({data}) => {
-              console.log(data.author);
-              this.setState({
-                a: true
-              })
+            // mutate().then(({data}) => {
+            //   console.log(data.author);
+            //   this.setState({
+            //     a: true
+            //   })
+            // })
+            this.setState({
+              a: true
             })
           }}
         >fetch more</button>
