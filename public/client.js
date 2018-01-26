@@ -28,10 +28,12 @@ const query = gql `
 query Q {
   author {
     id
-    name
-    books {
-      title
-      author
+    author {
+      name
+      books {
+        title
+        author
+      }
     }
   }
 }

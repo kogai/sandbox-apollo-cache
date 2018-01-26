@@ -30,6 +30,9 @@ const typeDefs = `
   type Book { title: String!, author: String! }
   type Author {
     id: String!
+    author: AuthorObject
+  }
+  type AuthorObject {
     name: String!
     books: [Book!]!
   }
@@ -42,15 +45,20 @@ const resolvers = {
     author: () => {
       if (called === 0) {
         called++;
-        return null
+        return {
+          id: "a",
+          author: null
+        }
       } else {
         return {
           id: "a",
-          name: "Arthur Clarke",
-          books: [{
-            author: "Arthur Clarke",
-            title: "The Sentinel"
-          }]
+          author: {
+            name: "Arthur Clarke",
+            books: [{
+              author: "Arthur Clarke",
+              title: "The Sentinel"
+            }]
+          }
         }
       }
 
