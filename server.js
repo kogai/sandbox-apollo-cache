@@ -1,3 +1,4 @@
+const path = require('path');
 const express = require('express');
 const bodyParser = require('body-parser');
 const {
@@ -7,6 +8,7 @@ const {
 const {
   makeExecutableSchema
 } = require('graphql-tools');
+const serveStatic = require('serve-static');
 
 // Some fake data
 const books = [{
@@ -70,6 +72,8 @@ app.use('/graphql', bodyParser.json(), graphqlExpress({
 app.use('/graphiql', graphiqlExpress({
   endpointURL: '/graphql'
 }));
+
+app.use(serveStatic(path.join(__dirname, 'dist')));
 
 app.listen(3000, () => {
   console.log('Go to http://localhost:3000/graphiql to run queries!');
